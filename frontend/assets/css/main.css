@@ -1,0 +1,67 @@
+@import url('https://fonts.googleapis.com/css2?family=SUSE:wght@100..800&display=swap');
+
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    line-height: 1.6;
+    color: #333;
+    max-width: 37.5rem;
+    margin: 0 auto;
+    padding: 1.25rem;
+    font-family: "SUSE", sans-serif;
+    font-optical-sizing: auto;
+}
+
+header {
+    background-color: #f4f4f4;
+    padding: 1.25rem;
+    text-align: center;
+}
+
+header h1 {
+    text-transform: capitalize;
+    color: #1A1A1A;
+}
+
+main {
+    padding: 1.25rem;
+}
+
+.egw__quote {
+    background-color: #e6f3ff;
+    border-left: 0.3125rem solid #3498db;
+    padding: 0.625rem;
+    margin: 1.25rem 0;
+}
+
+.egw__quote p {
+    font-style: italic;
+}
+
+
+footer {
+    background-color: #f4f4f4;
+    padding: 0.5rem 1.25rem 1.25rem 1.25rem;
+    font-size: 0.75em;
+}
+
+footer p {
+    padding: 0 0.5rem 0 0;
+}
+
+.footer__church-details {
+    margin: 0.5rem auto;
+    padding: 0 0.5rem 0 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.footer__church-details span {
+    font-weight: 500;
+}
