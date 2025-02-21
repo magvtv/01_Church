@@ -7,6 +7,18 @@
     <link rel="stylesheet" href="./assets/css/main.css">
 </head>
 <body>
+    <nav>
+        <div class="banner">
+            <img src="./assets/img/sda_bw.png" alt="">
+            <span>
+                karen springs
+                <br> 
+                SDA home church
+            </span>
+        </div>
+    </nav>
+
+
     <header>
         <h1>
             thank you for your tithe
@@ -16,38 +28,45 @@
     <main>
         <p>
             Dear
-            <span class="" id="memberName">
-                Alfred,
+            <span class="salutation" id="memberName">
+                
             </span>
         </p>
 
         <p>
             We are grateful for your generous contribution of 
-            <span>
-                KES 1000
+            <span id="titheAmount">
+                KES 4,700.00
             </span>
         </p>
 
-        <div class="egw__quote">
+        <div class="quote">
+            <p id="quoteDetails">
+                "Whoever sows sparingly will also reap sparingly, and whoever sows bountifully will also reap bountifully."
+            </p>
+            <!-- <br> -->
+            <span class="quote__source">
+                2 Corinthians 9:6 (NKJV)
+            </span>
+        </div>
+
+
+        <div class="appreciation">
             <p>
-                "Whoever sows sparingly will also reap sparingly, and whoever sows generously will also reap generously."
+                Your contribution greatly supports our home church mission to reach out to others and various community programs.
+            </p>
+            <br>
+            <p>
+                We highly appreciate your commitment to the community.
                 <br>
-                2 Corinthians 9:6
+                For any inquiries about this receipt, please contact our technical staff by sending us a reply to this email or an SMS to the number below
             </p>
         </div>
-        <p>
-            Your contribution greatly supports our home church mission to reach out to others and various community programs.
-            <br>
-            We highly appreciate your commitment to our congregation 
-        </p>
-        <p>
-            For any inquiries about this receipt, please contact our technical staff - PH Magutu
-        </p>
     </main>
 
     <footer>
         <p>
-            This is an official receipt for our records. Kindly retain it for reference purposes
+            This is an official receipt for our records. Kindly retain it on your email for reference purposes
         </p>
         <div class="footer__church-details">
             <span id="churchName">
@@ -55,7 +74,7 @@
             </span>
 
             <span>
-                Sky Dale Miotoni 300
+                300 Sky Dale - Miotoni - Karen
             </span>
             
             <span>
@@ -63,5 +82,11 @@
             </span>
         </div>
     </footer>
+
+    <script src="./assets/js/index.js"></script>
 </body>
 </html>
+
+<!--
+- add the sda logo and the name 'Karen Springs SDA Home Church' up top
+-->
