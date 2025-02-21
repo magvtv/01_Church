@@ -17,9 +17,33 @@ body {
     font-optical-sizing: auto;
 }
 
+
+.banner {
+    display: flex;
+    flex-direction: row;
+    place-items: center;
+    margin: 0 1rem;
+}
+
+.banner img {
+    width: auto;
+    margin: 0 auto;
+    height: 3.75rem;
+    filter: saturate(100)
+}
+nav span {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin: 0 auto;
+    text-align: center;
+    padding: 1rem;
+    text-transform: capitalize;
+}
+
 header {
+    margin: 1rem 1.125rem;
     background-color: #f4f4f4;
-    padding: 1.25rem;
+    padding: 1.175rem;
     text-align: center;
 }
 
@@ -72,13 +96,16 @@ footer p {
     justify-content: space-evenly;
 }
 
-.footer__church-details span {
+.footer__church-details > span {
     font-weight: 500;
 }
 
 
+@media (width <=  390px) {
+    header h1 {
+        font-size: 1.75rem;
+    }
 
-@media (width <=  360px) {
     .footer__church-details {
         flex-direction: column;
         display: flex;
@@ -88,5 +115,4 @@ footer p {
     .footer__church-details span {
         margin: 0.0625rem 0;
     }
-    
 }
