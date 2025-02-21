@@ -32,15 +32,24 @@ main {
     padding: 1.25rem;
 }
 
-.egw__quote {
+span.titheAmount {
+    font-style: oblique;
+}
+
+.quote {
     background-color: #e6f3ff;
     border-left: 0.3125rem solid #3498db;
     padding: 0.625rem;
     margin: 1.25rem 0;
 }
 
-.egw__quote p {
+.quote p {
     font-style: italic;
+}
+
+span.quote__source {
+    display: block;
+    padding: 1rem 0 0 0;
 }
 
 
@@ -65,4 +74,19 @@ footer p {
 
 .footer__church-details span {
     font-weight: 500;
+}
+
+
+
+@media (width <=  360px) {
+    .footer__church-details {
+        flex-direction: column;
+        display: flex;
+        place-items: center;
+    }
+
+    .footer__church-details span {
+        margin: 0.0625rem 0;
+    }
+    
 }
