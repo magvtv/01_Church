@@ -12,6 +12,7 @@ app.use(bodyParser.json());
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI, {
+
 }).then(() => console.log("MongoDB Connected"))
   .catch(err => console.error("DB Connection Error:", err));
 
@@ -24,38 +25,24 @@ const TitheSchema = new mongoose.Schema({
 const Tithe = mongoose.model('Tithe', TitheSchema);
 
 // Setup Nodemailer Transporter
-// const transporter = nodemailer.createTransport({
-//     service: 'gmail', // Can be Outlook, Yahoo, etc.
-//     auth: {
-//         user: process.env.SMTP_EMAIL,
-//         pass: process.env.SMTP_PASSWORD
-//     }
-// });
+const transporter = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+        user: process.env.SMTP_EMAIL,
+        pass: process.env.SMTP_PASSWORD
+    }
+});
 
 // API Route to Store Tithe Contribution
 app.post('/tithe', async (req, res) => {
     try {
-        const { name, email, phone, amount } = req.body;
+        const { name, amount } = req.body;
 
         // Save to database
-        const newTithe = new Tithe({ name, email, phone, amount });
+        const newTithe = new Tithe({ name, amount });
         await newTithe.save();
 
-        // Send email confirmation
-        // const mailOptions = {
-        //     from: process.env.SMTP_EMAIL,
-        //     to: email,
-        //     subject: 'Tithe Receipt Confirmation',
-        //     html: `<p>Dear ${name},</p>
-        //            <p>Thank you for your generous tithe of <strong>KES ${amount}</strong>.</p>
-        //            <p>Your support helps us continue our mission.</p>
-        //            <p>- Karen Springs SDA Home Church</p>`
-        // };
-
-        // await transporter.sendMail(mailOptions);
-        // console.log(`Email sent to ${email}`);
-
-        res.json({ success: true, message: "Tithe recorded and email sent!" });
+        res.json({ success: true, message: "Tithe recorded successfully!" });
     } catch (error) {
         console.error("Error processing tithe:", error);
         res.status(500).json({ success: false, message: "Server error" });
@@ -74,5 +61,5 @@ app.get('/tithes', async (req, res) => {
 });
 
 // Start Server
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 2000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
