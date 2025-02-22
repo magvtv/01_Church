@@ -5,3 +5,4 @@ vscode/
 
 backend/.env
 backend/package-lock.json
+backend/churchMembers.json
