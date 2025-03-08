@@ -13,10 +13,12 @@ const axios = require('axios');
 require('dotenv').config(); // Load environment variables
 
 const config = {
-    consumerKey: process.env.MPESA_CONSUMER_KEY,
-    consumerSecret: process.env.MPESA_CONSUMER_SECRET,
+    // consumerKey: process.env.MPESA_CONSUMER_KEY,
+    // consumerSecret: process.env.MPESA_CONSUMER_SECRET,
+    consumerKey: 'ouTdoAMvPgi9ag4Q0A79xX2cWAIBGeEcWDb2gwxBLTMzOl2C',
+    consumerSecret: 'cPOiDwRFm3Mf9xpAzIF0lBELHxlv8Gvo3WLB8PmjE3cAXWvUaNWaFvmFo8o4X9IY',
     shortcode: process.env.MPESA_SHORTCODE,
-    confirmationURL: process.env.MPESA_CALLBACK_URL,
+    confirmationURL: process.env.MPESA_CONFIRMATION_URL,
     validationURL: process.env.MPESA_VALIDATION_URL
 };
 
@@ -37,7 +39,7 @@ async function registerURLs() {
             ShortCode: config.shortcode,
             ResponseType: 'Completed',
             ConfirmationURL: config.confirmationURL,
-            ValidationURL: config.validationURL
+            // ValidationURL: config.validationURL
         },
         { headers: { Authorization: `Bearer ${token}` } }
     );
