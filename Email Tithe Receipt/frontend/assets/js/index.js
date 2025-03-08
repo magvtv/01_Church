@@ -6,8 +6,8 @@
 
 document.addEventListener("DOMContentLoaded", async function () {
     try {
-        let membersResponse = await fetch('../data/churchMembers.json')
-        let quotesResponse = await fetch('../data/shortQuotes.json')
+        let membersResponse = await fetch('../../data/churchMembers.json')
+        let quotesResponse = await fetch('../../data/shortQuotes.json')
         let members = await membersResponse.json()
         let quotes = await quotesResponse.json()
 
