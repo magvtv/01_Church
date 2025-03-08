@@ -1,5 +1,7 @@
 # Email Tithe Receipt System
 
+![template version 1.0](./frontend/assets/img/version_1.png)
+
 ## 📌 Overview
 
 The **Email Tithe Receipt System** is my digital-first approach to managing tithing records and automating receipts for church members. It ensures that every tither receives a **weekly summary email** of their contributions, eliminating the need for physical receipts while improving transparency, record-keeping, and sustainability.
