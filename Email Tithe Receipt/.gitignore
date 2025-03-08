@@ -5,4 +5,5 @@ package-lock.json
 thoughts.txt
 backend/.env
 backend/package-lock.json
+daraja_integration/foo.js
 backend/churchMembers.json
