@@ -6,7 +6,7 @@
 
 document.addEventListener("DOMContentLoaded", async function () {
     try {
-        let membersResponse = await fetch('../../../backend/data/dummyChurchMembers.json')
+        let membersResponse = await fetch('../../../backend/data/churchMembers.json')
         let quotesResponse = await fetch('../../../backend/data/shortQuotes.json')
         let members = await membersResponse.json()
         let quotes = await quotesResponse.json()
@@ -20,11 +20,12 @@ document.addEventListener("DOMContentLoaded", async function () {
 
         // update quote section
         document.getElementById("quoteDetail").textContent = `"${randomQuote.quote}"`
-        document.getElementByClassName(".quote__source").textContent = `- ${randomQuote.source}`
+        document.querySelector(".quote__source").textContent = `- ${randomQuote.source}`
     
 
-        let titheAmount = Math.floor(Math.random() * 5000) + 500
-        document.getElementById("titheAmount").textContent = `KES ${titheAmount}`  //random contribution KES 500 - 5500
+        let randomBase = Math.floor(Math.random() * 5000) + 500 // Range: 500 to 5499
+        let titheAmount = Math.round(randomBase / 10) * 10  // Round to the nearest 10
+        document.getElementById("titheAmount").textContent = `KES ${titheAmount.toLocaleString("en-US")}.00`  //random contribution KES 500 - 5500
 
     } catch (error) {
         console.error("Error fetching data: ", error)
