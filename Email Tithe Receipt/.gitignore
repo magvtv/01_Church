@@ -2,7 +2,7 @@ ideas.txt
 node_modules/
 package-lock.json
 .vscode/
-
+thoughts.txt
 backend/.env
 backend/package-lock.json
 backend/churchMembers.json

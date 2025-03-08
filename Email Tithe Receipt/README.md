@@ -75,8 +75,11 @@ The inspiration came from the **challenges of manual tithe collection** in churc
 ### **📍 Current State**
 
 ✅ **Backend API completed** with MongoDB for data storage.
+
 ✅ **Email automation set up** using Nodemailer.
+
 ✅ **M-Pesa webhook integration** ready for real-time tracking.
+
 ✅ **Cron job successfully automates Sunday summary emails.**
 
 ### **🔮 Future Enhancements**
