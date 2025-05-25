@@ -3,12 +3,14 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 
 // Import models
 const Member = require('./models/Member');
 const Tithe = require('./models/Tithe');
+
+// Import email service
+const { sendReceiptEmail } = require('./utils/emailService');
 
 // Initialize Express App
 const app = express();
@@ -26,81 +28,12 @@ mongoose.connect(process.env.MONGO_URI, {
 }).then(() => console.log("MongoDB Connected Securely"))
   .catch(err => console.error("DB Connection Error:", err));
 
-// Setup Nodemailer Transporter
-const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    auth: {
-        user: process.env.SMTP_EMAIL,
-        pass: process.env.SMTP_PASSWORD
-    }
-});
-
-// Helper function to generate discreet subject lines
-function getDiscreetSubject() {
-    const subjects = [
-        "A Note of Gratitude",
-        "This Week's Blessings",
-        "Karen Springs SDA Weekly Connection",
-        "Your Weekly Update",
-        "Thank You for Your Support"
-    ];
-    return subjects[Math.floor(Math.random() * subjects.length)];
-}
-
 // Helper function to mask sensitive data
 function maskAmount(amount) {
     if (process.env.NODE_ENV === 'production') {
         return '****';
     }
     return amount;
-}
-
-// Helper function to send receipt email with enhanced privacy
-async function sendReceiptEmail(member, tithe) {
-    // Only send if there's an actual contribution
-    if (!tithe || tithe.amount <= 0) {
-        return false;
-    }
-
-    const emailTemplate = {
-        from: {
-            name: 'Karen Springs SDA Church',
-            address: process.env.SMTP_EMAIL
-        },
-        to: member.email,
-        subject: getDiscreetSubject(),
-        html: `
-            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                <p>Dear ${member.firstName},</p>
-                
-                <p>Thank you for your faithful support of our ministry. Your contribution helps us serve our community and spread God's love.</p>
-                
-                <p>This email confirms your recent support.</p>
-
-                <div style="background-color: #f8f9fa; padding: 15px; margin: 20px 0; border-left: 4px solid #1a365d;">
-                    <p><em>"Bring the whole tithe into the storehouse, that there may be food in my house."</em></p>
-                    <p style="color: #666;">- Malachi 3:10</p>
-                </div>
-
-                <p>If you have any questions, please don't hesitate to reach out to us.</p>
-
-                <p>Blessings,<br>Karen Springs SDA Church</p>
-
-                <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
-                <p style="font-size: 12px; color: #666;">
-                    This is a confidential message. Please retain for your records.
-                </p>
-            </div>
-        `
-    };
-
-    try {
-        await transporter.sendMail(emailTemplate);
-        return true;
-    } catch (error) {
-        console.error('Email sending failed:', error);
-        return false;
-    }
 }
 
 // API Routes with enhanced privacy

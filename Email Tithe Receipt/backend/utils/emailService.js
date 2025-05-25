@@ -21,6 +21,35 @@ function getDiscreetSubject() {
     return subjects[Math.floor(Math.random() * subjects.length)];
 }
 
+// Helper function to format currency
+function formatCurrency(amount) {
+    return amount.toLocaleString('en-KE', { 
+        style: 'currency', 
+        currency: 'KES',
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 0
+    });
+}
+
+// Helper function to get a random quote
+function getRandomQuote() {
+    const quotes = [
+        {
+            quote: "Bring the whole tithe into the storehouse, that there may be food in my house.",
+            source: "Malachi 3:10"
+        },
+        {
+            quote: "The generous soul will be made rich and he who waters will also be watered.",
+            source: "Proverbs 11:25"
+        },
+        {
+            quote: "Lay up for yourselves treasures in heaven... For where your treasure is, there your heart will be also.",
+            source: "Matthew 6:20-21"
+        }
+    ];
+    return quotes[Math.floor(Math.random() * quotes.length)];
+}
+
 /**
  * Send email using AWS SES
  * @param {Object} member - Member object with email and name
@@ -33,6 +62,17 @@ async function sendReceiptEmail(member, tithe) {
         if (!tithe || tithe.amount <= 0) {
             return false;
         }
+        
+        // Get a random inspirational quote
+        const quote = getRandomQuote();
+        
+        // Format date in a user-friendly way
+        const formattedDate = new Date(tithe.date).toLocaleDateString('en-US', {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
 
         const emailParams = {
             Destination: {
@@ -43,42 +83,80 @@ async function sendReceiptEmail(member, tithe) {
                     Html: {
                         Data: `
                             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                                <p>Dear ${member.firstName},</p>
-                                
-                                <p>Thank you for your faithful support of our ministry. Your contribution helps us serve our community and spread God's love.</p>
-                                
-                                <p>This email confirms your recent support.</p>
-
-                                <div style="background-color: #f8f9fa; padding: 15px; margin: 20px 0; border-left: 4px solid #1a365d;">
-                                    <p><em>"Bring the whole tithe into the storehouse, that there may be food in my house."</em></p>
-                                    <p style="color: #666;">- Malachi 3:10</p>
+                                <div style="display: flex; align-items: center; justify-content: center; padding: 15px 0; margin: 0 0 20px 0;">
+                                    <span style="font-size: 1.35rem; text-align: center; text-transform: capitalize; font-weight: 600; color: #1a365d;">Karen Springs SDA Church</span>
                                 </div>
-
-                                <p>If you have any questions, please don't hesitate to reach out to us.</p>
-
-                                <p>Blessings,<br>Karen Springs SDA Church</p>
-
-                                <hr style="margin: 20px 0; border: none; border-top: 1px solid #ddd;">
-                                <p style="font-size: 12px; color: #666;">
-                                    This is a confidential message. Please retain for your records.
+                                
+                                <div style="text-align: center; padding: 1.175rem; background: #f4f4f4; border-radius: 10px; margin-bottom: 20px;">
+                                    <h1 style="color: #1A1A1A; text-transform: capitalize; font-size: 1.75rem; margin: 0;">Tithe Receipt</h1>
+                                </div>
+                                
+                                <p style="margin: 10px 0 0 0;">Dear ${member.firstName || member.name.split(' ')[0]},</p>
+                                
+                                <p style="margin: 20px 0; line-height: 1.7;">
+                                    Thank you for your faithful contribution of ${formatCurrency(tithe.amount)} 
+                                    which is a true blessing to the church. Your generous support helps our ministry 
+                                    continue to serve our community and spread God's love.
                                 </p>
+                                
+                                <div style="background-color: #e8f4ff; padding: 20px; margin: 30px 0; border-left: 4px solid #1a75d2; font-style: italic; line-height: 1.7;">
+                                    <p style="margin: 0;">"${quote.quote}"</p>
+                                    <span style="display: block; margin-top: 10px; color: #666; text-align: right;">- ${quote.source}</span>
+                                </div>
+                                
+                                <p style="margin: 30px 0; line-height: 1.8;">
+                                    We appreciate your commitment to supporting our church's mission through 
+                                    your tithes and offerings. May God continue to bless you abundantly.
+                                </p>
+                                
+                                <p>Received on: ${formattedDate}</p>
+                                <p>Payment method: ${tithe.paymentMethod || 'Electronic Transfer'}</p>
+
+                                <div style="background-color: #f4f4f4; border-radius: 0.25rem; padding: 0.5rem 1rem; margin-top: 30px;">
+                                    <p style="text-align: center; font-weight: 600; padding: 0.5rem 0; font-size: 0.75rem;">Karen Springs SDA Church</p>
+                                    <div style="margin: 0.5rem auto; padding: 0 0.5rem 0 0; display: flex; flex-direction: row; justify-content: space-evenly;">
+                                        <span style="font-weight: 500; font-size: 0.75rem; text-align: center; padding: 0.25rem;">Email: karenspringshomechurch@gmail.com</span>
+                                        <span style="font-weight: 500; font-size: 0.75rem; text-align: center; padding: 0.25rem;">Phone: +254 722 000 000</span>
+                                    </div>
+                                </div>
+                                
+                                <div style="margin-top: 1.5rem; text-align: center; font-size: 0.7rem; color: #888; padding: 0.5rem 0; border-top: 1px solid #e5e5e5;">
+                                    <p style="font-weight: 500;">This is a confidential message. Please retain for your records.</p>
+                                </div>
                             </div>
-                        `
+                        `,
+                        Charset: "UTF-8"
                     }
                 },
                 Subject: {
-                    Data: getDiscreetSubject()
+                    Data: getDiscreetSubject(),
+                    Charset: "UTF-8"
                 }
             },
-            Source: `Karen Springs SDA Church <${process.env.SES_SENDER_EMAIL}>`
+            Source: `Karen Springs SDA Church <${process.env.SES_SENDER_EMAIL}>`,
+            Headers: [
+                {
+                    Name: "List-Unsubscribe",
+                    Value: `<mailto:${process.env.SES_SENDER_EMAIL}?subject=unsubscribe>`
+                },
+                {
+                    Name: "Precedence", 
+                    Value: "bulk"
+                },
+                {
+                    Name: "X-Auto-Response-Suppress",
+                    Value: "OOF"
+                }
+            ]
         };
 
         const command = new SendEmailCommand(emailParams);
         await sesClient.send(command);
+        console.log(`Receipt email sent successfully to ${member.email}`);
         return true;
 
     } catch (error) {
-        console.error('Failed to send email:', error);
+        console.error('Failed to send receipt email:', error);
         return false;
     }
 }
@@ -90,40 +168,87 @@ async function sendReceiptEmail(member, tithe) {
  */
 async function sendWeeklySummary(tithes) {
     try {
+        if (!tithes || tithes.length === 0) {
+            console.log('No tithes to summarize for the week');
+            return false;
+        }
+
         const totalAmount = tithes.reduce((sum, tithe) => sum + tithe.amount, 0);
         const contributorCount = new Set(tithes.map(t => t.member)).size;
+        
+        // Format date range
+        const startDate = new Date(tithes[0].date).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        const endDate = new Date(tithes[tithes.length-1].date).toLocaleDateString('en-US', {
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
 
         const emailParams = {
             Destination: {
-                ToAddresses: [process.env.WEEKLY_SUMMARY_RECIPIENT]
+                ToAddresses: [process.env.WEEKLY_SUMMARY_RECIPIENT || process.env.SES_SENDER_EMAIL]
             },
             Message: {
                 Body: {
                     Html: {
                         Data: `
                             <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-                                <h2>Weekly Tithe Summary</h2>
-                                <p>Period: ${new Date(tithes[0].date).toLocaleDateString()} - ${new Date(tithes[tithes.length-1].date).toLocaleDateString()}</p>
+                                <div style="text-align: center; padding: 1.175rem; background: #f4f4f4; border-radius: 10px; margin-bottom: 20px;">
+                                    <h1 style="color: #1A1A1A; font-size: 1.75rem; margin: 0;">Weekly Tithe Summary</h1>
+                                </div>
                                 
-                                <div style="background-color: #f8f9fa; padding: 20px; margin: 20px 0;">
-                                    <p>Total Contributions: KES ${totalAmount.toLocaleString()}</p>
-                                    <p>Number of Contributors: ${contributorCount}</p>
+                                <p>Dear Church Administrator,</p>
+                                
+                                <p>Here is the weekly summary of tithes received during the period of ${startDate} - ${endDate}:</p>
+                                
+                                <div style="background-color: #f8f9fa; padding: 20px; margin: 20px 0; border: 1px solid #e9ecef; border-radius: 5px;">
+                                    <p style="font-size: 1.2rem; font-weight: bold; margin-bottom: 15px;">Summary Statistics:</p>
+                                    <p style="margin: 10px 0;"><strong>Total Contributions:</strong> ${formatCurrency(totalAmount)}</p>
+                                    <p style="margin: 10px 0;"><strong>Number of Contributors:</strong> ${contributorCount}</p>
+                                    <p style="margin: 10px 0;"><strong>Average Contribution:</strong> ${formatCurrency(totalAmount / contributorCount)}</p>
                                 </div>
 
-                                <p>This is an automated summary. Please check the system for detailed records.</p>
+                                <p style="margin-top: 30px;">This is an automated summary. Please check the system for detailed records.</p>
+                                
+                                <p>Blessings,<br>Karen Springs SDA Church System</p>
+                                
+                                <div style="margin-top: 1.5rem; text-align: center; font-size: 0.7rem; color: #888; padding: 0.5rem 0; border-top: 1px solid #e5e5e5;">
+                                    <p style="font-weight: 500;">This is a confidential administrative message.</p>
+                                </div>
                             </div>
-                        `
+                        `,
+                        Charset: "UTF-8"
                     }
                 },
                 Subject: {
-                    Data: "Weekly Tithe Summary Report"
+                    Data: "Weekly Tithe Summary Report",
+                    Charset: "UTF-8"
                 }
             },
-            Source: `Karen Springs SDA Church <${process.env.SES_SENDER_EMAIL}>`
+            Source: `Karen Springs SDA Church <${process.env.SES_SENDER_EMAIL}>`,
+            Headers: [
+                {
+                    Name: "List-Unsubscribe",
+                    Value: `<mailto:${process.env.SES_SENDER_EMAIL}?subject=unsubscribe>`
+                },
+                {
+                    Name: "Precedence", 
+                    Value: "bulk"
+                },
+                {
+                    Name: "X-Auto-Response-Suppress",
+                    Value: "OOF"
+                }
+            ]
         };
 
         const command = new SendEmailCommand(emailParams);
         await sesClient.send(command);
+        console.log('Weekly summary email sent successfully');
         return true;
 
     } catch (error) {
